@@ -1,5 +1,7 @@
 package com.chat.chatbot_be.infra.qdrant;
 
+import com.chat.chatbot_be.infra.embedded.EmbeddingClient;
+import com.chat.chatbot_be.infra.loader.GridDataLoader;
 import com.chat.chatbot_be.infra.vector.VectorDbClient;
 import com.chat.chatbot_be.infra.vector.VectorSearchResult;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,15 +18,20 @@ public class QdrantVectorDbClient implements VectorDbClient {
 
     private final WebClient webClient;
     private final String collectionName;
+    private final EmbeddingClient embeddingClient;
 
     public QdrantVectorDbClient(
             @Value("${qdrant.url}") String qdrantUrl,
-            @Value("${qdrant.collection}") String collectionName
+            @Value("${qdrant.collection}") String collectionName,
+            @Value("${qdrant.api-key}") String apiKey,
+            EmbeddingClient embeddingClient
     ) {
         this.webClient = WebClient.builder()
                 .baseUrl(qdrantUrl)
+                .defaultHeader("api-key", apiKey)
                 .build();
         this.collectionName = collectionName;
+        this.embeddingClient = embeddingClient;
     }
 
 
@@ -93,6 +100,35 @@ public class QdrantVectorDbClient implements VectorDbClient {
             }
         } catch (org.springframework.web.reactive.function.client.WebClientResponseException e) {
             throw e;
+        }
+    }
+
+
+    @Override
+    public void upsertAll(List<GridDataLoader.QaRow> rows) {
+        long id = 1;
+        for (GridDataLoader.QaRow row : rows) {
+            float[] vector = embeddingClient.embed(row.getQuestion());
+            upsert(String.valueOf(id), vector, row.getQuestion(), row.getAnswer());
+            id++;
+        }
+    }
+
+    @Override
+    public boolean isInitialized() {
+        // 제일 간단한 버전: 포인트 개수 조회해서 0보다 크면 true
+        try {
+            CountResponse res = webClient.post()
+                    .uri("/collections/{collection}/points/count", collectionName)
+                    .bodyValue(Map.of("exact", true))
+                    .retrieve()
+                    .bodyToMono(CountResponse.class)
+                    .block();
+
+            return res != null && res.getResult() != null && res.getResult().getCount() > 0;
+        } catch (Exception e) {
+            // 실패하면 일단 미초기화로 보고 다시 적재 시도하게 할 수도 있음
+            return false;
         }
     }
 
@@ -181,5 +217,17 @@ public class QdrantVectorDbClient implements VectorDbClient {
 
         public String getStatus() { return status; }
         public void setStatus(String status) { this.status = status; }
+    }
+
+    public static class CountResponse {
+        private CountResult result;
+        public CountResult getResult() { return result; }
+        public void setResult(CountResult result) { this.result = result; }
+
+        public static class CountResult {
+            private long count;
+            public long getCount() { return count; }
+            public void setCount(long count) { this.count = count; }
+        }
     }
 }
