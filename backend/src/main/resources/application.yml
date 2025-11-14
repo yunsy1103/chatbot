@@ -1,0 +1,11 @@
+server:
+  port: ${PORT:8080}
+
+openai:
+  api-key: ${OPENAI_API_KEY}
+  embedding-model: ${OPENAI_MODEL}  # 너가 쓰는 모델 이름
+
+qdrant:
+  url: ${QDRANT_URL}
+  api-key: ${QDRANT_API_KEY}
+  collection: ${QDRANT_NAME}               # 방금 만든 컬렉션 이름
