@@ -8,10 +8,15 @@ group = 'com.chat'
 version = '0.0.1-SNAPSHOT'
 description = 'Chatbot project for Spring Boot'
 
-java {
+/*java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
+}*/
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
