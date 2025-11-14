@@ -19,7 +19,6 @@ FAQ 질문을 의미적으로 이해하고 가장 적절한 답변을 찾아주�
 - **React + Vite**
 - **JavaScript**
 - **Tailwind CSS** (UI 스타일)
-- **Fetch API** (백엔드 API 통신)
 
 ### Vector & Embedding
 - **OpenAI Embedding API** (`text-embedding-3-small`)
