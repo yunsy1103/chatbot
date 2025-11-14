@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ['openjdk17']
+
+[phases.build]
+cmds = ['chmod +x gradlew', './gradlew clean build -x test --no-daemon']
+
+[start]
+cmd = 'java -Dserver.port=$PORT -jar build/libs/*.jar'
