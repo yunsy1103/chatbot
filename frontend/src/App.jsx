@@ -66,8 +66,10 @@ export default function App() {
 
         setIsLoading(true)
 
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
         try {
-            const response = await fetch('http://localhost:8080/api/chat/ask', {
+            const response = await fetch(`${API_URL}/api/chat/ask`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
