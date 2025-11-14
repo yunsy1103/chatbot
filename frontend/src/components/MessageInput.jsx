@@ -25,7 +25,7 @@ export default function MessageInput({ onSendMessage, isLoading }) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="메시지를 입력하세요... (Enter로 전송, Shift+Enter로 줄바꿈)"
+            placeholder="무엇이든 물어보세요"
             disabled={isLoading}
             rows={1}
             className="flex-1 px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"

@@ -67,7 +67,7 @@ export default function App() {
         setIsLoading(true)
 
         try {
-            const response = await fetch('http://localhost:8080/chat/ask', {
+            const response = await fetch('http://localhost:8080/api/chat/ask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -149,13 +149,13 @@ export default function App() {
                     </>
                 ) : (
                     <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center px-4">
-                        <div className="space-y-2">
-                            <h1 className="text-5xl font-bold text-gray-900">ChatBot</h1>
-                            <p className="text-gray-600 text-lg">Start a new conversation to begin chatting</p>
+                        <div className="space-y-6">
+                            <h1 className="text-5xl font-bold text-gray-900">안녕하세요! Perso.ai에 대해 알고 계신가요?</h1>
+                            <p className="text-gray-600 text-lg">필요하신 내용을 말씀해주시면 바로 도와드릴게요.</p>
                         </div>
                         <button
                             onClick={createNewConversation}
-                            className="px-8 py-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-lg"
+                            className="mt-1 px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-lg"
                         >
                             New Conversation
                         </button>
