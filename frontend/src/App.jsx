@@ -153,7 +153,7 @@ export default function App() {
                     <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center px-4">
                         <div className="space-y-6">
                             <h1 className="text-5xl font-bold text-gray-900">안녕하세요! Perso.ai에 대해 알고 계신가요?</h1>
-                            <p className="text-gray-600 text-lg">필요하신 내용을 말씀해주시면 바로 도와드릴게요.</p>
+                            <p className="text-gray-600 text-lg">궁금하신 내용을 말씀해주시면 바로 도와드릴게요.</p>
                         </div>
                         <button
                             onClick={createNewConversation}
